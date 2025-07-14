@@ -41,11 +41,11 @@ export function Button({
         className="absolute inset-0"
         style={{ borderRadius: `calc(${borderRadius} * 0.96)` }}
       >
-        <MovingBorder duration={duration} rx="30%" ry="30%">
+        <MovingBorder duration={duration} rx="50%" ry="50%">
           {/* Multiple orbiting elements */}
-          <motion.div className="h-16 w-16 bg-blue-500 rounded-full opacity-50 blur-md" />
-          <motion.div className="h-10 w-10 bg-purple-400 rounded-full opacity-40 blur-sm" />
-          <motion.div className="h-12 w-12 bg-pink-500 rounded-full opacity-30 blur-md" />
+          <motion.div className="h-20 w-20 bg-red-500 rounded-full opacity-80 blur-md" />
+          <motion.div className="h-20 w-20 bg-red-400 rounded-full opacity-80 blur-sm" />
+          <motion.div className="h-20 w-20 bg-orange-500 rounded-full opacity-80 blur-md" />
         </MovingBorder>
       </div>
 
