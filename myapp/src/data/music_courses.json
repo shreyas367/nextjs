@@ -1,0 +1,47 @@
+{
+  "courses": [
+    {
+      "id": 1,
+      "title": "Guitar Fundamentals",
+      "slug": "guitar-fundamentals",
+      "description": "Learn the basics of playing guitar with our comprehensive beginner's course.",
+      "price": 99.99,
+      "instructor": "John Doe",
+      "isFeatured": true,
+      "image": "/courses/guitar.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Piano for Beginners",
+      "slug": "piano-for-beginners",
+      "description": "Start your musical journey with foundational piano skills taught by expert",
+        "price": 89.99,
+        "instructor": "Jane Smith", 
+        "isFeatured": false,
+        "image": "/courses/piano.jpg"
+
+    },
+      {
+      "id": 3,
+      "title": "Piano for Beginners",
+      "slug": "piano-for-beginners",
+      "description": "Start your musical journey with foundational piano skills taught by expert",
+        "price": 89.99,
+        "instructor": "Jane Smith", 
+        "isFeatured": false,
+        "image": "/courses/piano.jpg"
+
+    },
+    {
+      "id": 4,
+      "title": "Drum Basics",
+      "slug": "drum-basics",
+      "description": "Master the art of drumming with our step-by-step course designed for beginners.",
+      "price": 79.99,
+      "instructor": "Mike Johnson",
+      "isFeatured": true,
+      "image": "/courses/drums.jpg"
+    }
+
+  ]
+}
