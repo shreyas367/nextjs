@@ -1,66 +1,59 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
 const colors = require("tailwindcss/colors");
 const flattenColorPalette = require("tailwindcss/lib/util/flattenColorPalette").default;
-// Remove or comment this:
 const svgToDataUri = require("mini-svg-data-uri");
+const plugin = require("tailwindcss/plugin");
 
-// const svgToDataUri = require("tailwindcss/lib/util/svgToDataUri").default;
-
-
-function addVariablesForColors({ addBase, theme } , any ) {
-  const allColors = flattenColorPalette(theme('colors'));
+const addVariablesForColors = plugin(function ({ addBase, theme }) {
+  const allColors = flattenColorPalette(theme("colors"));
   const newVars = Object.fromEntries(
     Object.entries(allColors).map(([key, value]) => [`--${key}`, value])
   );
 
   addBase({
-    ':root': newVars,
+    ":root": newVars,
   });
-}
+});
 
-
-function addSvgPatterns({ matchUtilities, theme }) {
+const addSvgPatterns = plugin(function ({ matchUtilities, theme }) {
   matchUtilities(
     {
-      'bg-grid': (value) => ({
+      "bg-grid": (value) => ({
         backgroundImage: `url("${svgToDataUri(
           `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`
         )}")`,
       }),
-      'bg-grid-small': (value) => ({
+      "bg-grid-small": (value) => ({
         backgroundImage: `url("${svgToDataUri(
           `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="8" height="8" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`
         )}")`,
       }),
-      'bg-dot': (value) => ({
+      "bg-dot": (value) => ({
         backgroundImage: `url("${svgToDataUri(
-          `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"><circle fill="${value}" id="pattern-circle" cx="10" cy="10" r="1.6257413380501518"></circle></svg>`
+          `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"><circle fill="${value}" cx="10" cy="10" r="1.625" /></svg>`
         )}")`,
       }),
     },
-    { values: flattenColorPalette(theme('backgroundColor')), type: 'color' }
+    {
+      values: flattenColorPalette(theme("backgroundColor")),
+      type: "color",
+    }
   );
-}
-
-
+});
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-   blur: {
-    '100': '200px',
-  },
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./app/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx}", "./app/**/*.{js,ts,jsx,tsx}"],
   darkMode: "class",
   theme: {
     extend: {
-       perspective: {
-    1000: "1000px",
-  },
-
-       fontFamily: {
+      perspective: {
+        1000: "1000px",
+      },
+      blur: {
+        100: "200px",
+      },
+      fontFamily: {
         sans: ["var(--font-sans)", ...defaultTheme.fontFamily.sans],
         mono: ["var(--font-mono)", ...defaultTheme.fontFamily.mono],
       },
@@ -69,22 +62,21 @@ module.exports = {
       },
       animation: {
         spotlight: "spotlight 2s ease .75s forwards",
-          scroll: 'scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite'
+        scroll:
+          "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
       },
       keyframes: {
-         scroll: {
+        scroll: {
           to: {
-            transform: 'translate(calc(-50% - 0.5rem))',
+            transform: "translate(calc(-50% - 0.5rem))",
           },
-          pulseGlow: {
-      "0%, 100%": { opacity: "0.5", transform: "scale(1)" },
-      "50%": { opacity: "1", transform: "scale(1.1)" },
-    },
+        },
+        pulseGlow: {
+          "0%, 100%": { opacity: "0.5", transform: "scale(1)" },
+          "50%": { opacity: "1", transform: "scale(1.1)" },
+        },
       },
     },
   },
-  plugins: [addVariablesForColors,addSvgPatterns],
-}
+  plugins: [addVariablesForColors, addSvgPatterns],
 };
-export default config;
-
