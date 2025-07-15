@@ -1,6 +1,8 @@
 import HeroSection from "@/components/HeroSection";
 import Image from "next/image";
 import FeaturedCourses from "@/components/FeaturedCourses"; // Importing the FeaturedCourses component
+import WhyChooseUs from "@/components/WhyChooseUs"; // Importing the WhyChooseUs component
+
 
 export default function Home() {
   return (
@@ -13,6 +15,8 @@ export default function Home() {
 
        
       <FeaturedCourses />
+       
+       <WhyChooseUs />
 
    
       
