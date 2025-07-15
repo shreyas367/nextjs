@@ -21,7 +21,7 @@ export const RotatingBox = () => {
   
 
   return (
-    <div className="absolute top-1 left-1/2 -z-20 -translate-x-1/2 -translate-y-1 perspective-1000">
+    <div className="absolute top-1/2 left-1/2 -z-20 -translate-x-1/2 -translate-y-1/2 perspective-1000">
       <div
         ref={boxRef}
         className="w-1000 h-80 bg-gradient-to-br from-orange-400 to-blue-500 opacity-40 shadow-xl rounded-xl"
