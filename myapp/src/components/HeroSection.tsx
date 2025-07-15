@@ -10,7 +10,7 @@ export default function HeroSection() {
     // It includes a spotlight effect and a rotating box for visual appeal
 
   return (
-    <div className="relative overflow-hidden h-auto md:h-[40vh] w-full flex items-center justify-center flex-col mx-auto py-10 md:py-0">
+    <div className="relative overflow-hidden h-full md:h-[40vh] w-full flex items-center justify-center flex-col mx-auto py-10 md:py-0">
       <Spotlight />
        <RotatingBox />
 

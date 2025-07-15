@@ -1,5 +1,6 @@
 import HeroSection from "@/components/HeroSection";
 import Image from "next/image";
+import FeaturedCourses from "@/components/FeaturedCourses"; // Importing the FeaturedCourses component
 
 export default function Home() {
   return (
@@ -8,6 +9,10 @@ export default function Home() {
       <h1>main  ss page in myapp/src/page.tsx </h1>
       
       <HeroSection />
+      {/* Uncomment the following line to include the FeaturedCourses component */}
+      <FeaturedCourses />
+
+   
       
       {/* <h1 className="text-3xl font-bold underline">
         Welcome to your <span className="text-blue-500">Next.js</span> app!
