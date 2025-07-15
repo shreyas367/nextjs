@@ -9,7 +9,9 @@ export default function Home() {
       <h1>main  ss page in myapp/src/page.tsx </h1>
       
       <HeroSection />
-      {/* Uncomment the following line to include the FeaturedCourses component */}
+
+
+       
       <FeaturedCourses />
 
    

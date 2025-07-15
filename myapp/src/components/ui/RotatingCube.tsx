@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { a } from "framer-motion/client";
 
 export const RotatingCube = () => {
   const [isHovering, setIsHovering] = useState(false);
