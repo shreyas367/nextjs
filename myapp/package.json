@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "datauri": "^4.1.0",
     "framer-motion": "^12.23.5",
+    "mini-svg-data-uri": "^1.4.4",
     "motion": "^12.23.5",
     "next": "15.3.5",
     "react": "^19.0.0",
