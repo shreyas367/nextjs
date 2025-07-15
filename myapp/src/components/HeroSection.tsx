@@ -2,9 +2,14 @@
 import React from "react";
 import Link from "next/link";
 import { Spotlight } from "./ui/Spotlight"; // the mouse-following one
-import { RotatingBox } from "./ui/RotatingBox"; // the rotating box
 
-import { Button } from "./ui/moving-border"; // the button with moving border
+
+import { Button } from "./ui/moving-border";
+ // the button with moving border
+
+ import { RotatingCube } from "./ui/RotatingCube";
+
+
 export default function HeroSection() {
     // This component serves as the hero section of the application
     // It includes a spotlight effect and a rotating box for visual appeal
@@ -12,7 +17,8 @@ export default function HeroSection() {
   return (
     <div className="relative overflow-hidden h-180 w-full flex items-center justify-center flex-col mx-auto py-10 md:py-0">
       <Spotlight />
-       <RotatingBox />
+      <RotatingCube />
+       {/* <RotatingBox /> */}
 
       <div className="p-4 relative z-10 w-full text-center">
         <h1 className="mt-20 md:mt-0 text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
