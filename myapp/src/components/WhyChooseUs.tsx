@@ -37,7 +37,7 @@ export const musicSchoolFeatures = [
 
 export default function WhyChooseUs() {
   return (
-    <div>
+    <div className="w-full  ">
      <StickyScroll content={musicSchoolFeatures} />
     </div>
   )
