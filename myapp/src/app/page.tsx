@@ -4,6 +4,7 @@ import FeaturedCourses from "@/components/FeaturedCourses"; // Importing the Fea
 import WhyChooseUs from "@/components/WhyChooseUs"; // Importing the WhyChooseUs component
 
 import UpcomingWebinars from "@/components/UpcomingWebinars";
+import Instructors from "@/components/Instructors"; // Importing the Instructors component
 
 
 export default function Home() {
@@ -24,7 +25,7 @@ export default function Home() {
       <UpcomingWebinars />
 
 
-      
+      <Instructors />
       
       {/* Uncomment the following lines to add a heading and an image */}
 
