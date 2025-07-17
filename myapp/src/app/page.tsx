@@ -5,7 +5,7 @@ import WhyChooseUs from "@/components/WhyChooseUs"; // Importing the WhyChooseUs
 
 import UpcomingWebinars from "@/components/UpcomingWebinars";
 import Instructors from "@/components/Instructors"; // Importing the Instructors component
-
+import Footer from "@/components/Footer"; // Importing the Footer component
 
 export default function Home() {
   return (
@@ -26,6 +26,9 @@ export default function Home() {
 
 
       <Instructors />
+
+
+      <Footer />
       
       {/* Uncomment the following lines to add a heading and an image */}
 
