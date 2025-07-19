@@ -7,16 +7,22 @@ import bcrypt from "bcryptjs";
 import UserModel from "@/model/user";
 import { dbConnect } from "@/lib/dbconnect";
 
+
+
 export const authOptions: NextAuthOptions = {
   providers: [
+      // 👉 Google OAuth
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
+
+    // 👉 GitHub OAuth
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
     }),
+
     CredentialsProvider({
       id: "credentials",
       name: "Credentials",
@@ -71,6 +77,13 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token }) {
+        if (token) {
+            session.user.id = token.id as string;
+            session.user.email = token.email as string;
+            session.user.username = token.username as string;
+            session.user.isAcceptingMessages = token.isAcceptingMessages as boolean; // Ensure isAcceptingMessages is set
+            session.user.isVerified = token.isVerified as boolean; // Ensure isVerified is set
+        }
       return session;
     },
   },
@@ -79,7 +92,7 @@ export const authOptions: NextAuthOptions = {
 
 
   pages: {
-    signIn: "/signin", // Custom sign-in page
+    signIn: "/sign-in", // Custom sign-in page
   },
 
   session: {
