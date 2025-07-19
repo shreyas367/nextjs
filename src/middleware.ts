@@ -41,7 +41,7 @@ export const config = {
     '/sign-up',
     '/verify/:path*',
     '/dashboard/:path*',
-    
+    "/profile/:path*"
   
   ],
 };
