@@ -8,29 +8,23 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
   const url = request.nextUrl;
 
-  if (
-    token &&
-    (
-      url.pathname === '/' ||
-      url.pathname.startsWith('/sign-in') ||
-      url.pathname.startsWith('/sign-up') ||
-      url.pathname.startsWith('/verify')
-    )
-  ) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
-  }
+  const isAuthRoute =
+    url.pathname === '/' ||
+    url.pathname.startsWith('/sign-in') ||
+    url.pathname.startsWith('/sign-up') ||
+    url.pathname.startsWith('/verify');
 
-  if (
-    !token &&
-    (
-      url.pathname.startsWith('/dashboard') ||
-      url.pathname.startsWith('/home') ||
-      url.pathname.startsWith('/profile')
-    )
-  ) {
+  // if (token && isAuthRoute) {
+  //   // Logged-in users shouldn't see auth pages
+  //   return NextResponse.redirect(new URL('/dashboard', request.url));
+  // }
+
+  if (!token && url.pathname.startsWith('/dashboard')) {
+    // Redirect unauthenticated users away from dashboard
     return NextResponse.redirect(new URL('/sign-in', request.url));
   }
 
+  // Allow request to proceed
   return NextResponse.next();
 }
 
@@ -41,7 +35,5 @@ export const config = {
     '/sign-up',
     '/verify/:path*',
     '/dashboard/:path*',
-    "/profile/:path*"
-  
-  ],
+  ]
 };
