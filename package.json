@@ -14,8 +14,10 @@
     "@hookform/resolvers": "^5.1.1",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-toast": "^1.2.14",
     "@react-email/components": "^0.3.2",
     "ai": "^4.3.19",
+    "axios": "^1.10.0",
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -29,7 +31,9 @@
     "react-email": "^4.2.3",
     "react-hook-form": "^7.60.0",
     "resend": "^4.7.0",
+    "sonner": "^2.0.6",
     "tailwind-merge": "^3.3.1",
+    "usehooks-ts": "^3.1.1",
     "zod": "^3.25.76"
   },
   "devDependencies": {

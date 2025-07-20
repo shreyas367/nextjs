@@ -1,68 +1,65 @@
-'use client';
+import React from 'react'
 
-import { signIn } from 'next-auth/react';
-import { useState } from 'react';
+import {zodResolver} from '@hookform/resolvers/zod'
+import {useForm} from 'react-hook-form'
+import {z} from 'zod'
+import {Button} from '@/components/ui/button'
+import Link from 'next/link'
+import { useState   } from 'react'
+import { useDebounceValue } from 'usehooks-ts'
+// Update the import path below to the correct relative path if needed
+// Update the import path below to the correct relative path if needed
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
+import axios from 'axios'
 
-export default function SignInPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export default function page() {
+ const [username, setUsername] = React.useState('')
+ const [usernameMessage, setUsernameMessage] = React.useState('')
+ const [isCheckingUsername, setIsCheckingUsername] = React.useState(false)
+ const[isSubmitting, setIsSubmitting] = React.useState(false)
 
-  const handleCredentialsLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await signIn('credentials', {
-      email,
-      password,
-      callbackUrl: '/',
-    });
-  };
+ 
+ const debouncedUsername = useDebounceValue(username, 200)
+const router = useRouter();
 
+
+// zod implementation
+const form= useForm({
+  resolver: zodResolver(
+    z.object({
+      username: z.string().min(3, 'Username must be at least 3 characters long').max(20, 'Username must be at most 20 characters long'),
+      email: z.string().email('Invalid email address'),
+      password: z.string().min(6, 'Password must be at least 6 characters long'),
+    })
+  ),
+  defaultValues: {
+    username: '',
+    email: '',
+    password: '',
+  },
+})
+
+const onSubmit =async (data:z.infer<typeof signUpSchema>) => {
+
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-md">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Sign In</h2>
-
-        <form onSubmit={handleCredentialsLogin} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full px-4 py-2 border rounded"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full px-4 py-2 border rounded"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-          >
-            Login with Email
-          </button>
-        </form>
-
-        <div className="my-4 text-center text-gray-500">OR</div>
-
-        <div className="space-y-2">
-          <button
-            onClick={() => signIn('google', { callbackUrl: '/' })}
-            className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600"
-          >
-            Sign in with Google
-          </button>
-          <button
-            onClick={() => signIn('github', { callbackUrl: '/' })}
-            className="w-full bg-gray-800 text-white py-2 rounded hover:bg-gray-900"
-          >
-            Sign in with GitHub
-          </button>
-        </div>
-      </div>
+    <div>
+      page
     </div>
-  );
+  )
 }
