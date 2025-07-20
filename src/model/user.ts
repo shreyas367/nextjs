@@ -50,7 +50,8 @@ export interface User extends Document {
   };
 
   isVerified?: boolean;
-  message: string;
+  isAcceptingMessage: boolean;
+  messages: Message[];
 }
 
 
@@ -92,7 +93,7 @@ const UserSchema = new Schema<User>({
         type: Boolean,
         default: false,
     },
-    message: [MesssageSchema]
+    messages: [MesssageSchema]
 }, { timestamps: true, versionKey: false });
 
 export const User = mongoose.model<User>("User", UserSchema);
