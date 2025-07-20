@@ -22,7 +22,9 @@ export async function POST(request: Request) {
 
     if (isCodeValid && isCodeNotExpired) {
       user.isVerified = true;
-      
+        user.verifyCode = ''; // Clear the verification code after successful verification
+      user.verifyCodeExpires = null; // Clear the expiration date
+
       await user.save();
 
       return Response.json({

@@ -42,10 +42,13 @@ export interface User extends Document {
   password: string;
   verifyCode: {
   type: String,
-  default: null, // ✅ allows null
-  required: true},
+  default: null};
 
-  verifyCodeExpires: Date;
+  verifyCodeExpires: {
+  type: Date;
+  default: null,
+  };
+  
   isVerified?: boolean;
   message: string;
 }
