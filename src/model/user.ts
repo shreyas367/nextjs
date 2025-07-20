@@ -40,11 +40,16 @@ export interface User extends Document {
   username: string;
   email: string;
   password: string;
-  verifyCode: string;
-    verifyCodeExpires: Date;
-    isVerified?: boolean;
+  verifyCode: {
+  type: String,
+  default: null, // ✅ allows null
+  required: true},
+
+  verifyCodeExpires: Date;
+  isVerified?: boolean;
   message: string;
 }
+
 
 const UserSchema = new Schema<User>({
   username: {
