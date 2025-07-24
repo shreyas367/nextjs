@@ -28,21 +28,27 @@ export default function VerifyAccount() {
     resolver: zodResolver(verifySchema),
     
   })
+const onSubmit = async (data: VerifyFormData) => {
+  try {
+    const response = await axios.post('/api/verify-code', {
+      username: decodeURIComponent(username),
+      code: data.code,
+    })
 
-  const onSubmit = async (data: VerifyFormData) => {
-    try {
-      await axios.post('/api/auth/verify', {
-        username: username,
-        code: data.code,
-      })
-
-      toast.success('Account verified successfully!')
+    if (response.data.success) {
+      toast.success('✅ Account verified successfully!')
       router.replace('/auth/sign-in')
-    } catch (error) {
-      console.error('Verification error:', error)
-      toast.error('Failed to verify account. Please try again.')
+    } else {
+      toast.error(response.data.message || 'Verification failed.')
     }
+  } catch (error: any) {
+    console.error('Verification error:', error)
+    toast.error(
+      error?.response?.data?.message || 'Failed to verify account. Please try again.'
+    )
   }
+}
+
 
   return (
     <div className="max-w-md mx-auto mt-10">
