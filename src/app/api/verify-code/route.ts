@@ -3,10 +3,8 @@ import UserModel from "@/model/user";
 
 export async function POST(request: Request) {
   await dbConnect();
-
   try {
     const { username, code } = await request.json();
-
     const decodedUsername = decodeURIComponent(username);
     const user = await UserModel.findOne({ username: decodedUsername });
 
@@ -18,13 +16,11 @@ export async function POST(request: Request) {
     }
 
     const isCodeValid = user.verifyCode === code;
-    const isCodeNotExpired = new Date(user.verifyCodeExpires as unknown as string | number | Date) > new Date();
+    const isCodeNotExpired = new Date(user.verifyCodeExpires) > new Date();
 
     if (isCodeValid && isCodeNotExpired) {
       user.isVerified = true;
-       
       await user.save();
-
       return Response.json({
         success: true,
         message: "Account successfully verified",

@@ -27,14 +27,21 @@ export const authOptions: NextAuthOptions = {
       id: "credentials",
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text", placeholder: "you@example.com" },
-        password: { label: "Password", type: "password" },
-      },
+  identifier: { label: "Email or Username", type: "text" },
+  password: { label: "Password", type: "password" },
+},
+
       async authorize(credentials: any): Promise<any> {
         await dbConnect();
 
         try {
-          const user = await UserModel.findOne({ email: credentials.email });
+        const user = await UserModel.findOne({
+  $or: [
+    { email: credentials.identifier.toLowerCase() },
+    { username: credentials.identifier },
+  ]
+});
+
 
           if (!user) {
             throw new Error("User not found");
@@ -53,9 +60,11 @@ export const authOptions: NextAuthOptions = {
           }
 
           return {
-            id: user._id,
-            email: user.email,
-            name: user.username,
+             id: user._id,
+  email: user.email,
+  username: user.username, // ✅ direct match
+  isAcceptingMessages: user.isAcceptingMessages,
+  isVerified: user.isVerified,
           };
         } catch (error: any) {
           throw new Error(error.message || "Login failed");
@@ -79,7 +88,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.username = user.username;
+        token.username =user.username;
         token.isAcceptingMessagges = user.isAcceptingMessages; // Ensure isAcceptingMessages is set
         token.isVerified = user.isVerified ; // Ensure isVerified is set
       }
