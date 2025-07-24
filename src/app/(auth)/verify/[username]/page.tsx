@@ -26,6 +26,7 @@ export default function VerifyAccount() {
 
   const form = useForm<VerifyFormData>({
     resolver: zodResolver(verifySchema),
+    
   })
 
   const onSubmit = async (data: VerifyFormData) => {
