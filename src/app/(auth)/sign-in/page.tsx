@@ -37,33 +37,25 @@ export default function SignInPage() {
     setLoading(true)
 
     const result = await signIn('credentials', {
-      redirect: false,
-      // Use the identifier field for both email and username
+      redirect: false, // prevents automatic redirection
       identifier: data.identifier,
       password: data.password,
-      callbackUrl: '/dashboard', // ✅ fallback if result.url is undefined
+     
     })
 
     setLoading(false)
+    console.log("Sign-in result:", result)
+    if (!result) {
+      toast.error('Sign-in failed')
+      return
+    }
 
     if (result?.ok) {
-  toast.success('Signed in successfully')
-
-  const destination = result.url
-  if (destination && typeof destination === 'string') {
-    try {
-      const url = new URL(destination, window.location.origin) // Validate URL
-      router.push(url.pathname)
-    } catch (e) {
-      router.push('/dashboard') // Fallback in case of bad URL
+      toast.success('Signed in successfully')
+      router.push(result.url || '/dashboard') // fallback to /dashboard
+    } else {
+      toast.error(result?.error || 'Sign-in failed')
     }
-  } else {
-    router.push('/dashboard')
-  }
-} else {
-  toast.error(result?.error || 'Invalid credentials')
-}
-
   }
 
   return (
