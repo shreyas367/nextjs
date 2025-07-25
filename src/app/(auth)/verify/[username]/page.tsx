@@ -29,7 +29,7 @@ export default function VerifyAccount() {
 
       if (response.data.success) {
         toast.success('✅ Account verified successfully!')
-        router.replace('/auth/sign-in')
+        router.replace('/sign-in')
       } else {
         toast.error(response.data.message || 'Verification failed.')
       }
