@@ -16,7 +16,7 @@ export default function Navbar() {
   return (
     <nav className='p-4 md:p-6 bg-gray-800 text-white flex justify-between items-center'>
       <div className='container mx-auto flex justify-between items-center'>
-        <a href="#">messagee</a>
+        <a href="#">  FEEDBACK </a>
 
         {session ? (
           <>
