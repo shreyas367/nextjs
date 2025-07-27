@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState } from 'react'; // ✅ fixed import
+import React, { useCallback, useEffect, useState } from 'react';
 import { Message } from '@/model/user';
 import {
   Card,
@@ -11,23 +11,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from 'sonner';
-
-import { useSession } from 'next-auth/react'; // ✅ fixed useSession import
-
+import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { acceptMessageSchema } from '@/schemas/acceptMessageSchema';
+import axios from 'axios';
+import { ApiResponse } from '@/types/ApiResponse';
 
-// ❌ Removed unnecessary: import { set } from 'mongoose';
-
-export default function Page() { // ✅ changed 'page' to 'Page' (capital letter)
+export default function Page() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
 
-  const { data: session } = useSession(); // ✅ fixed destructuring
+  const { data: session } = useSession();
 
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema),
@@ -36,43 +33,71 @@ export default function Page() { // ✅ changed 'page' to 'Page' (capital letter
   const { register, watch, setValue } = form;
   const acceptMessage = watch('acceptMessage');
 
+  // Fetch accept-message toggle state
   const fetchAcceptMessage = useCallback(async () => {
     setIsSwitchLoading(true);
-
-    
     try {
-      const response = await fetch('/api/accept-message', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ acceptMessage }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to accept message');
-      }
-
+      const response = await fetch('/api/accept-message');
       const data = await response.json();
-      toast.success('Message accepted successfully');
+      setValue('acceptMessage', data.isAcceptingMessage);
+      toast.success('Fetched acceptMessage successfully');
     } catch (error: any) {
-      toast.error(error.message || 'An error occurred while accepting the message');
+      toast.error(error.message || 'Error fetching accept message');
     } finally {
       setIsSwitchLoading(false);
     }
-  }, [acceptMessage]); // ✅ added dependency to useCallback
+  }, [setValue]);
 
+  // Delete a message from list
   const handleDeleteMessage = (messageId: string) => {
     setMessages(messages.filter((message) => message.id !== messageId));
     toast.success('Message deleted successfully');
   };
 
-  if (!session) {
-    return <div className="text-center text-gray-500">Please log in to view messages</div>;
-  }
+  // Fetch messages
+  const fetchMessages = useCallback(async (refresh: boolean = false) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get<ApiResponse>("/api/get-messages");
+      setMessages(response.data.messages || []);
+      if (refresh) {
+        toast.success("Showing latest messages");
+      }
+    } catch (error: any) {
+      toast.error(error.message || 'Error fetching messages');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
-  if (!messages || messages.length === 0) {
-    return <div className="text-center text-gray-500">No messages found</div>;
+  // Initial fetch on mount
+  useEffect(() => {
+    if (!session || !session.user) return;
+    fetchMessages();
+    fetchAcceptMessage();
+  }, [session, fetchAcceptMessage, fetchMessages]);
+
+  // Handle switch change
+  const handleSwitchChange = async () => {
+    setIsSwitchLoading(true);
+    try {
+      const response = await axios.post('/api/accept-message', {
+        acceptMessage: !acceptMessage,
+      });
+      setValue('acceptMessage', response.data.isAcceptingMessage);
+      toast.success('Switch updated');
+      toast.success(response.data.message); // ✅ Fixed this line
+    }
+    
+    catch (error: any) {
+      toast.error(error.message || 'Error toggling switch');
+    } finally {
+      setIsSwitchLoading(false);
+    }
+  };
+
+  if (!session || !session.user) {
+    return <div>please login</div>;
   }
 
   return (
