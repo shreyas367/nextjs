@@ -52,7 +52,7 @@ export default function SignInPage() {
 
     if (result?.ok) {
       toast.success('Signed in successfully')
-      router.push(result.url || '/dashboard') // fallback to /dashboard
+      router.push('/dashboard') // fallback to /dashboard
     } else {
       toast.error(result?.error || 'Sign-in failed')
     }
