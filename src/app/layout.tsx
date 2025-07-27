@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic'
 import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 // Lazy load Navbar to prevent "use client" conflict
-
+import { Tailwind } from "@react-email/components";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
