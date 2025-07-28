@@ -35,7 +35,7 @@ export default function Page() {
   const fetchAcceptMessage = useCallback(async () => {
     setIsSwitchLoading(true);
     try {
-      const response = await fetch('/api/accept-message');
+      const response = await fetch('/api/accept-messages');
       const data = await response.json();
       setValue('acceptMessage', data.isAcceptingMessage);
       toast.success('Fetched acceptMessage successfully');
@@ -72,7 +72,7 @@ export default function Page() {
   const handleSwitchChange = async () => {
     setIsSwitchLoading(true);
     try {
-      const response = await axios.post('/api/accept-message', {
+      const response = await axios.post('/api/accept-messages', {
         acceptMessage: !acceptMessage,
       });
       setValue('acceptMessage', response.data.isAcceptingMessage);
