@@ -174,13 +174,14 @@ export default function Page() {
           ) : (
             messages.map((message) => (
               <div
-                key={message.id}
+                key={message._id}
                 className="border p-2 rounded flex justify-between items-center"
               >
                 <p>{message.content}</p>
-                <Button
+
+                <Button className='bg-black'
                   variant="destructive"
-                  onClick={() => handleDeleteMessage(message.id)}
+                  onClick={() => handleDeleteMessage(message._id)}
                 >
                   Delete
                 </Button>

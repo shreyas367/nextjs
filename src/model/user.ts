@@ -2,6 +2,7 @@ import mongoose, { Schema, Document, models, model } from "mongoose";
 
 // --- Message Interface + Schema ---
 export interface Message extends Document {
+  _id:string;
   content: string;
   createdAt: Date;
 }
