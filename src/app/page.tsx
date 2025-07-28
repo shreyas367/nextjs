@@ -44,7 +44,7 @@ function Home() {
                 </CardHeader>
                 <CardContent className="flex aspect-square items-center justify-center p-6">
                  
-                  <span className='text-lg font-italic'>{message.content}</span>
+                  <span className='text-lg italic'>{message.content}</span>
                 </CardContent>
               </Card>
             </div>
