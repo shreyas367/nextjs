@@ -2,12 +2,12 @@
 
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { Sun, Moon } from "lucide-react";
-
+import axios from "axios";
 
 export default function DashboardLayout({
   children,
@@ -16,6 +16,8 @@ export default function DashboardLayout({
 }) {
   const { data: session, status } = useSession();
   const [theme, setTheme] = useState("light");
+  const [messages, setMessages] = useState<any[]>([]);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -29,13 +31,35 @@ export default function DashboardLayout({
     document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
 
-  // Auto-refresh dummy notification every 10 seconds
+  // Poll for new messages every 10s
   useEffect(() => {
-    const interval = setInterval(() => {
-      toast("Refreshed dashboard data.");
-    }, 10000);
-    return () => clearInterval(interval);
-  }, []);
+    if (!session || intervalRef.current) return;
+
+    const fetchMessages = async () => {
+      try {
+        const res = await axios.get("/api/get-messages");
+        const newMessages = res.data || [];
+
+        // Compare by length or any other identifier
+        if (newMessages.length !== messages.length) {
+          setMessages(newMessages);
+          toast.success("Dashboard updated with new messages!");
+        }
+      } catch (error) {
+        console.error("Failed to fetch messages:", error);
+      }
+    };
+
+    fetchMessages(); // Initial fetch
+    intervalRef.current = setInterval(fetchMessages, 10000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [session, messages]);
 
   if (status === "loading") {
     return <div className="p-6">Loading...</div>;
@@ -68,7 +92,7 @@ export default function DashboardLayout({
         <Link href="/dashboard/settings" className="hover:text-blue-500">Settings</Link>
       </nav>
 
-      {/* Main Content */}
+      {/* Main content */}
       <motion.main
         className="p-6"
         initial={{ opacity: 0, y: 15 }}

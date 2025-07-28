@@ -1,81 +1,59 @@
 import { getServerSession } from "next-auth";
-import { AuthOptions } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/options";
 import { dbConnect } from "@/lib/dbconnect";
 import UserModel from "@/model/user";
-import { User } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
+import { NextResponse } from "next/server";
 
+export async function GET() {
+  await dbConnect();
 
-export  async function GET(request: Request) {
-    await dbConnect();
-    
-    const session = await getServerSession(authOptions);
-    const user: User = session?.user as User;
-    
-    if (!session || !session.user) {
-        return Response.json({
-        success: false,
-        message: "Unauthorized access",
-        }, { status: 401 });
-    }
-    const userId = new mongoose.Types.ObjectId(user.id);
-    
-    try {
-        const user = await UserModel.aggregate([
-            { $match: { _id: userId } },
-            { $unwind: "$messages" },
-            {
-                $sort: { "messages.createdAt": -1 } // Sort messages by createdAt in descending order
-            },
-            {
-                $group: {
-                    _id: "$_id",
-                    isAcceptingMessages: { $first: "$isAcceptingMessages" },
-                    messages: { $push: "$messages" } // Collect all messages in an array
-                }
-            },
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user) {
+    return NextResponse.json(
+      { success: false, message: "Unauthorized access" },
+      { status: 401 }
+    );
+  }
 
-            {
-                $project: {
-                    _id: 1,
-                    username: 1,
-                    email: 1,
-                    isAcceptingMessages: 1,
-                    messages: 1
-                }
-            }
-        ])
+  const userId = new mongoose.Types.ObjectId(session.user.id);
 
-        if (!user || user.length === 0) {
-            return Response.json({
-                success: false,
-                message: "User not found",
-            }, { status: 404 });
-        }
+  try {
+    const user = await UserModel.aggregate([
+      { $match: { _id: userId } },
+      { $unwind: "$messages" },
+      { $sort: { "messages.createdAt": -1 } },
+      {
+        $group: {
+          _id: "$_id",
+          isAcceptingMessages: { $first: "$isAcceptingMessages" },
+          messages: { $push: "$messages" },
+        },
+      },
+      {
+        $project: {
+          isAcceptingMessages: 1,
+          messages: 1,
+        },
+      },
+    ]);
 
-        return Response.json({
-            success: true,
-            message: user[0].messages,
-            data: user[0], // Return the first user object with messages
-        }, { status: 200 });
-
-
-
-
-      
-
-
-
-    } catch (error) {
-        console.error("Error fetching messages:", error);
-        return Response.json({
-        success: false,
-        message: "Failed to fetch messages",
-        }, { status: 500 });
+    if (!user || user.length === 0) {
+      return NextResponse.json(
+        { success: false, message: "User not found" },
+        { status: 404 }
+      );
     }
 
-
-
-
+    return NextResponse.json(
+      { success: true, message: user[0].messages, data: user[0] },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    return NextResponse.json(
+      { success: false, message: "Failed to fetch messages" },
+      { status: 500 }
+    );
+  }
 }
