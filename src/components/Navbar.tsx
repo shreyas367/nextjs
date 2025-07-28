@@ -31,7 +31,7 @@ export default function Navbar() {
                 <Button variant="default">Log In</Button>
               </Link>
               <Link href="/sign-up">
-                <Button >Sign Up</Button>
+                <Button >Sign Up  </Button>
               </Link>
             </div>
           )
