@@ -170,7 +170,7 @@ export default function Page() {
           {isLoading ? (
             <p>Loading...</p>
           ) : messages.length === 0 ? (
-            <p>No messages yet.</p>
+            <p>Messages Below </p>
           ) : (
             messages.map((message) => (
               <div

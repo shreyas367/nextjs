@@ -4,11 +4,13 @@ import { dbConnect } from "@/lib/dbconnect";
 import UserModel from "@/model/user";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
+import { cookies, headers } from "next/headers";
 
-export async function GET() {
+export async function GET(req: Request) {
   await dbConnect();
 
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession({ req: { headers: headers(), cookies: cookies() }, ...authOptions });
+
   if (!session || !session.user) {
     return NextResponse.json(
       { success: false, message: "Unauthorized access" },

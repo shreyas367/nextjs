@@ -38,9 +38,8 @@ export default function DashboardLayout({
     const fetchMessages = async () => {
       try {
         const res = await axios.get("/api/get-messages");
-        const newMessages = res.data || [];
+        const newMessages = res.data.message || [];
 
-        // Compare by length or any other identifier
         if (newMessages.length !== messages.length) {
           setMessages(newMessages);
           toast.success("Dashboard updated with new messages!");
@@ -100,6 +99,26 @@ export default function DashboardLayout({
         transition={{ duration: 0.3 }}
       >
         {children}
+
+        {/* Display Messages */}
+        {messages.length > 0 ? (
+          <div className="mt-8 space-y-4">
+            <h2 className="text-xl font-semibold">Anonymous Messages</h2>
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className="p-4 border rounded-md dark:border-gray-700 bg-gray-50 dark:bg-gray-900"
+              >
+                <p>{msg.content}</p>
+                <div className="text-sm text-gray-500 mt-1">
+                  {new Date(msg.createdAt).toLocaleString()}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="mt-6 text-gray-500">No messages yet.</p>
+        )}
       </motion.main>
     </div>
   );
