@@ -53,6 +53,8 @@ export default function Page() {
     try {
       const response = await axios.get<ApiResponse>("/api/get-messages");
       setMessages(response.data.messages || []);
+      
+
       if (refresh) {
         toast.success("Showing latest messages");
       }

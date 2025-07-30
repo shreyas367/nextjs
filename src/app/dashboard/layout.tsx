@@ -100,25 +100,7 @@ export default function DashboardLayout({
       >
         {children}
 
-        {/* Display Messages */}
-        {messages.length > 0 ? (
-          <div className="mt-8 space-y-4">
-            <h2 className="text-xl font-semibold">Anonymous Messages</h2>
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className="p-4 border rounded-md dark:border-gray-700 bg-gray-50 dark:bg-gray-900"
-              >
-                <p>{msg.content}</p>
-                <div className="text-sm text-gray-500 mt-1">
-                  {new Date(msg.createdAt).toLocaleString()}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="mt-6 text-gray-500">No messages yet.</p>
-        )}
+
       </motion.main>
     </div>
   );

@@ -18,11 +18,18 @@ export async function GET(req: Request) {
     );
   }
 
+
+
+  
+
+
+
   const userId = new mongoose.Types.ObjectId(session.user.id);
+  const username = session.user.username;
 
   try {
     const user = await UserModel.aggregate([
-      { $match: { _id: userId } },
+      { $match: { username } },
       { $unwind: "$messages" },
       { $sort: { "messages.createdAt": -1 } },
       {
@@ -48,7 +55,7 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json(
-      { success: true, message: user[0].messages, data: user[0] },
+      { success: true, messages: user[0].messages, data: user[0] },
       { status: 200 }
     );
   } catch (error) {
